@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 
 import { docWidth, docHeight } from '../helpers/constants';
-import { getCanvasEl } from './app-component';
+import { getCanvasEl } from './app';
 import StartButton from './view/start-button';
 
 export class Index {

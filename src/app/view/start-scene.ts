@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { configImg } from '../../helpers/images-config';
-import AbstractScene from './AbstractScene';
+import AbstractScene from '../model/AbstractScene';
 
 const Sprite = PIXI.Sprite;
 

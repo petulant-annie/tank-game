@@ -1,9 +1,9 @@
 import * as PIXI from 'pixi.js';
 
-import AbstractScene from './AbstractScene';
+import AbstractScene from '../model/AbstractScene';
+import Cell from './cell';
 import { configImg } from '../../helpers/images-config';
-import { docWidth, docHeight, wallSize, brickSize } from '../../helpers/constants';
-import { method } from 'lodash';
+import { wallSize, brickSize } from '../../helpers/constants';
 
 const Sprite = PIXI.Sprite;
 
@@ -11,116 +11,83 @@ export default class GameScene extends AbstractScene {
   container: PIXI.Container;
   gameScene: PIXI.Texture;
   mainScene: PIXI.Sprite;
-  eagle: PIXI.Sprite;
-  wallConcrete: PIXI.Texture;
-  wallBrick: PIXI.Texture;
-  eagleBase: PIXI.Texture;
-  leavesTexture: PIXI.Texture;
-  waterTexture: PIXI.Texture;
   wallSize: number;
   brickSize: number;
-  wall: PIXI.Sprite;
-  brick: PIXI.Sprite;
 
   constructor(container: PIXI.Container) {
     super(container);
-    this.container = container;
   }
 
-  initTexture() {
-    this.gameScene = PIXI.Texture.from(configImg.GAME_BG);
-    this.wallConcrete = PIXI.Texture.from(configImg.WALL);
-    this.wallBrick = PIXI.Texture.from(configImg.BRICK);
-    this.eagleBase = PIXI.Texture.from(configImg.EAGLE);
-    this.leavesTexture = PIXI.Texture.from(configImg.LEAVES);
-    this.waterTexture = PIXI.Texture.from(configImg.WATER);
-  }
-
-  drawWall(
-    texture: PIXI.Texture,
-    startPoint: number,
-    exitCondition: number,
-    increment: number,
-    position: { x: number, y: number }) {
-    for (let i = startPoint; i <= exitCondition; i += increment) {
-      const wall = new Sprite(texture);
-      wall.position.y = position.y === null ? i : position.y;
-      wall.position.x = position.x === null ? i : position.x;
-      this.mainScene.addChild(wall);
+  drawGroup(type: number, rowIndex: number, start: number, amount: number) {
+    const textures: any = {
+      0: configImg.BRICK,
+      1: configImg.WALL,
+      2: configImg.WATER,
+      3: configImg.LEAVES,
+    };
+    const step = type === 0 ? brickSize : wallSize;
+    for (let i = start * wallSize; i < start * wallSize + amount * wallSize; i += step) {
+      const position = { x: i, y: rowIndex * wallSize };
+      const cell = new Cell(this.mainScene, textures[type], position);
+      cell.init();
+      if (type === 0) {
+        const additionalCellPosition = { x: i, y: rowIndex * wallSize + brickSize };
+        const additionalCell = new Cell(this.mainScene, textures[type], additionalCellPosition);
+        additionalCell.init();
+      }
     }
   }
 
-  drawGameFrame() {
-    const texture = this.wallConcrete;
-    this.drawWall(texture, 0, docHeight, wallSize, { x: 0, y: null });
-    this.drawWall(texture, wallSize, docWidth, wallSize, { x: null, y: 0 });
-    this.drawWall(
-      texture,
-      wallSize,
-      docWidth - wallSize,
-      wallSize,
-      { x: null, y: docHeight - wallSize });
-    this.drawWall(texture, wallSize, docHeight, wallSize, { x: docWidth - wallSize, y: null });
+  drawGameBackground() {
+    const background = PIXI.Texture.from(configImg.GAME_BG);
+    this.mainScene.addChild(new Sprite(background));
+  }
+
+  drawGameField() {
+    const borderTopBottom = [0, 29];
+    const borderLeft = [0, 1];
+    const borderRight = [28, 1];
+
+    const water1 = [5, 5];
+
+    const fieldCoordsArray = [
+      [null, [borderTopBottom], null, null],
+      [null, [borderLeft, borderRight], [water1], null],
+      [null, [borderLeft, borderRight], [water1], null],
+      [null, [borderLeft, borderRight], [water1], null],
+      [null, [borderLeft, borderRight], [water1], null],
+      [null, [borderLeft, borderRight], [water1], null],
+      [null, [borderLeft, borderRight], null, null],
+      [[[1, 2], [15, 5]], [borderLeft, borderRight], null, null],
+      [[[1, 2], [15, 5]], [borderLeft, borderRight], null, null],
+      [[[15, 5]], [borderLeft, borderRight], null, null],
+      [[[15, 5]], [borderLeft, borderRight], null, null],
+      [[[15, 5]], [borderLeft, borderRight], null, null],
+      [null, [borderLeft, borderRight], null, null],
+      [null, [borderLeft, borderRight], null, null],
+      [null, [borderLeft, borderRight], null, null],
+      [null, [borderLeft, borderRight], null, null],
+      [null, [borderLeft, borderRight], null, null],
+      [null, [borderLeft, borderRight], null, null],
+      [[[13, 3]], [borderLeft, borderRight], null, null],
+      [[[13, 1], [15, 1]], [borderLeft, borderRight], null, null],
+      [null, [borderTopBottom], null, null],
+    ];
+
+    fieldCoordsArray.forEach((row, rowIndex) => {
+      row.forEach((type, typeIndex) => {
+        if (type && type.length > 0) {
+          type.forEach((group: any) => {
+            this.drawGroup(typeIndex, rowIndex, group[0], group[1]);
+          });
+        }
+      });
+    });
   }
 
   drawEagle() {
-    this.eagle = new Sprite(this.eagleBase);
-    this.eagle.position.y = docHeight - wallSize * 2;
-    this.eagle.position.x = docWidth / 2;
-    this.mainScene.addChild(this.eagle);
-  }
-
-  drawEagleFrame() {
-    const texture = this.wallBrick;
-    for (let i = 0; i <= brickSize; i += brickSize) {
-      this.brick = new Sprite(texture);
-      this.brick.position.y = docHeight - (wallSize * 2 + brickSize);
-      this.brick.position.x = docWidth / 2 + i;
-      this.mainScene.addChild(this.brick);
-    }
-    for (let i = 0; i <= brickSize; i += brickSize) {
-      this.brick = new Sprite(texture);
-      this.brick.position.y = docHeight - (wallSize * 3);
-      this.brick.position.x = docWidth / 2 + i;
-      this.mainScene.addChild(this.brick);
-    }
-    for (let i = 0; i <= wallSize + brickSize; i += brickSize) {
-      this.brick = new Sprite(texture);
-      this.brick.position.y = docHeight - 54 - i;
-      this.brick.position.x = (docWidth / 2) + (brickSize * 2);
-      this.mainScene.addChild(this.brick);
-    }
-    for (let i = 0; i <= wallSize + brickSize; i += brickSize) {
-      this.brick = new Sprite(texture);
-      this.brick.position.y = docHeight - 54 - i;
-      this.brick.position.x = (docWidth / 2) + (brickSize * 3);
-      this.mainScene.addChild(this.brick);
-    }
-    for (let i = 0; i <= wallSize + brickSize; i += brickSize) {
-      this.brick = new Sprite(texture);
-      this.brick.position.y = docHeight - 54 - i;
-      this.brick.position.x = (docWidth / 2) - wallSize + brickSize;
-      this.mainScene.addChild(this.brick);
-    }
-    for (let i = 0; i <= wallSize + brickSize; i += brickSize) {
-      this.brick = new Sprite(texture);
-      this.brick.position.y = docHeight - 54 - i;
-      this.brick.position.x = (docWidth / 2) - wallSize;
-      this.mainScene.addChild(this.brick);
-    }
-  }
-
-  drawContentWall() {
-    this.drawWall(
-      this.wallBrick, wallSize * 2,
-      docHeight - wallSize * 3,
-      brickSize,
-      { x: wallSize * 3, y: null });
-    this.drawWall(
-      this.wallBrick,
-      wallSize * 2, docHeight - wallSize * 3,
-      brickSize,
-      { x: wallSize * 3 + brickSize, y: null })
+    const eagle = new Cell(this.mainScene, configImg.EAGLE, { x: 504, y: 684 });
+    eagle.init();
   }
 
   remove() {
@@ -128,13 +95,10 @@ export default class GameScene extends AbstractScene {
   }
 
   init() {
-    this.initTexture();
     this.mainScene = new Sprite(this.gameScene);
     this.container.addChild(this.mainScene);
-    this.drawGameFrame();
+    this.drawGameBackground();
+    this.drawGameField();
     this.drawEagle();
-    this.drawEagleFrame();
-    this.drawContentWall();
   }
-
 }
