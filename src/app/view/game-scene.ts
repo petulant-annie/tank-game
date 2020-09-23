@@ -47,31 +47,30 @@ export default class GameScene extends AbstractScene {
     const borderTopBottom = [0, 29];
     const borderLeft = [0, 1];
     const borderRight = [28, 1];
-
     const water1 = [5, 5];
 
     const fieldCoordsArray = [
-      [null, [borderTopBottom], null, null],
-      [null, [borderLeft, borderRight], [water1], null],
-      [null, [borderLeft, borderRight], [water1], null],
-      [null, [borderLeft, borderRight], [water1], null],
-      [null, [borderLeft, borderRight], [water1], null],
-      [null, [borderLeft, borderRight], [water1], null],
-      [null, [borderLeft, borderRight], null, null],
-      [[[1, 2], [15, 5]], [borderLeft, borderRight], null, null],
-      [[[1, 2], [15, 5]], [borderLeft, borderRight], null, null],
-      [[[15, 5]], [borderLeft, borderRight], null, null],
-      [[[15, 5]], [borderLeft, borderRight], null, null],
-      [[[15, 5]], [borderLeft, borderRight], null, null],
-      [null, [borderLeft, borderRight], null, null],
-      [null, [borderLeft, borderRight], null, null],
-      [null, [borderLeft, borderRight], null, null],
-      [null, [borderLeft, borderRight], null, null],
-      [null, [borderLeft, borderRight], null, null],
-      [null, [borderLeft, borderRight], null, null],
-      [[[13, 3]], [borderLeft, borderRight], null, null],
-      [[[13, 1], [15, 1]], [borderLeft, borderRight], null, null],
-      [null, [borderTopBottom], null, null],
+      [null, [borderTopBottom], null, null], // top line
+      [[[3, 2]], [borderLeft, borderRight], [[]], null],
+      [[[3, 4], [15, 1], [10, 3]], [borderLeft, borderRight], [], [[1, 2]]],
+      [[[2, 3], [18, 3], [24, 2]], [borderLeft, borderRight], null, [[1, 1]]],
+      [[[2, 3]], [borderLeft, borderRight], [[5, 18], [25, 3]], [[1, 1]]],
+      [[[6, 2]], [borderLeft, borderRight], null, [[1, 4]]],
+      [[[23, 2], [9, 1]], [borderLeft, borderRight, [25, 3]], null, [[1, 4]]],
+      [[[2, 1], [15, 6], [9, 3]], [borderLeft, borderRight], [[6, 2]], null],
+      [[[3, 1], [6, 2], [15, 6], [23, 1]], [borderLeft, borderRight, [10, 2]], null, null],
+      [[[2, 1], [4, 1], [15, 3], [23, 1]], [borderLeft, borderRight], null, [[20, 3]]],
+      [[[15, 3], [25, 3]], [borderLeft, borderRight, [4, 1]], null, [[20, 3]]],
+      [[[15, 3]], [borderLeft, borderRight, [4, 1], [7, 2]], null, [[10, 5], [18, 7]]],
+      [[[15, 3]], [borderLeft, borderRight], null, [[10, 5], [18, 7]]],
+      [null, [borderLeft, borderRight], [[1, 3], [6, 14], [23, 5]], null],
+      [[[6, 1]], [borderLeft, borderRight], null, [[1, 3]]],
+      [[[6, 3], [12, 6], [20, 1]], [borderLeft, borderRight], null, [[1, 3]]],
+      [[[4, 1], [8, 1], [20, 1], [17, 1], [24, 3]], [borderLeft, borderRight], null, [[1, 3]]],
+      [[[4, 1], [8, 1], [22, 5]], [borderLeft, borderRight, [2, 2], [20, 1]], null, [[1, 1]]],
+      [[[20, 1], [8, 1], [25, 1], [13, 3]], [borderLeft, borderRight], null, [[24, 1]]],
+      [[[20, 1], [13, 1], [15, 1]], [borderLeft, borderRight], null, null],
+      [null, [borderTopBottom], null, null], // bottom line
     ];
 
     fieldCoordsArray.forEach((row, rowIndex) => {
