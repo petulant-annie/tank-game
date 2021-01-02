@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { configAtlas } from '../helpers/atlas-config';
 
 import { docWidth, docHeight } from '../helpers/constants';
 import { getCanvasEl } from './app';
@@ -25,6 +26,6 @@ const { view, renderer } = app;
 doc.appendChild(view);
 app.stage.addChild(container);
 
-const startButton =  new StartButton(container);
+const startButton = new StartButton(container);
 startButton.init();
 startButton.handleClick();

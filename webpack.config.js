@@ -68,6 +68,7 @@ const config = {
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
     new MiniCssExtractPlugin(),
     new CssMinimizerPlugin(),
+    new webpack.ProvidePlugin({ PIXI: 'pixi.js' }),
   ]
 };
 

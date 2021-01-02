@@ -10,9 +10,9 @@ export default class Cell extends AbstractCell {
     this.position = position;
   }
   init() {
-    const a = new PIXI.Sprite(this.texture);
-    a.position.x = this.position.x;
-    a.position.y = this.position.y;
-    this.sprite.addChild(a);
+    const sprite = new PIXI.Sprite(this.texture);
+    sprite.position.x = this.position.x;
+    sprite.position.y = this.position.y;
+    this.sprite.addChild(sprite);
   }
 }

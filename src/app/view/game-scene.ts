@@ -3,7 +3,9 @@ import * as PIXI from 'pixi.js';
 import AbstractScene from '../model/AbstractScene';
 import Cell from './cell';
 import { configImg } from '../../helpers/images-config';
+import { configAtlas } from '../../helpers/atlas-config';
 import { wallSize, brickSize } from '../../helpers/constants';
+import Tank from './tank';
 
 const Sprite = PIXI.Sprite;
 
@@ -44,13 +46,12 @@ export default class GameScene extends AbstractScene {
   }
 
   drawGameField() {
-    const borderTopBottom = [0, 29];
+    const borderHorizontal = [0, 29];
     const borderLeft = [0, 1];
     const borderRight = [28, 1];
-    const water1 = [5, 5];
 
     const fieldCoordsArray = [
-      [null, [borderTopBottom], null, null], // top line
+      [null, [borderHorizontal], null, null], // top line
       [[[3, 2]], [borderLeft, borderRight], [[]], null],
       [[[3, 4], [15, 1], [10, 3]], [borderLeft, borderRight], [], [[1, 2]]],
       [[[2, 3], [18, 3], [24, 2]], [borderLeft, borderRight], null, [[1, 1]]],
@@ -70,7 +71,7 @@ export default class GameScene extends AbstractScene {
       [[[4, 1], [8, 1], [22, 5]], [borderLeft, borderRight, [2, 2], [20, 1]], null, [[1, 1]]],
       [[[20, 1], [8, 1], [25, 1], [13, 3]], [borderLeft, borderRight], null, [[24, 1]]],
       [[[20, 1], [13, 1], [15, 1]], [borderLeft, borderRight], null, null],
-      [null, [borderTopBottom], null, null], // bottom line
+      [null, [borderHorizontal], null, null], // bottom line
     ];
 
     fieldCoordsArray.forEach((row, rowIndex) => {
@@ -89,6 +90,16 @@ export default class GameScene extends AbstractScene {
     eagle.init();
   }
 
+  drawTank() {
+    const tank =
+      new Tank(this.mainScene, configImg.TANK, configAtlas.APPEAR_ANIM, { x: 460, y: 684 });
+    tank.init();
+  }
+
+  drawEnemyTank() {
+
+  }
+
   remove() {
     this.container.removeChild(this.mainScene);
   }
@@ -99,5 +110,6 @@ export default class GameScene extends AbstractScene {
     this.drawGameBackground();
     this.drawGameField();
     this.drawEagle();
+    this.drawTank();
   }
 }
