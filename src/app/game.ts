@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import { configAtlas } from '../helpers/atlas-config';
 
-import { docWidth, docHeight } from '../helpers/constants';
+import { sizeConfig } from '../helpers/constants';
 import { getCanvasEl } from './app';
 import StartButton from './view/start-button';
 
@@ -16,8 +16,8 @@ const container = new PIXI.Container();
 
 const app = new PIXI.Application({
   view: getCanvasEl('game'),
-  width: docWidth,
-  height: docHeight,
+  width: sizeConfig.docWidth,
+  height: sizeConfig.docHeight,
   antialias: true,
 });
 

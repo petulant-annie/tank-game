@@ -4,7 +4,7 @@ import AbstractScene from '../model/AbstractScene';
 import Cell from './cell';
 import { configImg } from '../../helpers/images-config';
 import { configAtlas } from '../../helpers/atlas-config';
-import { wallSize, brickSize } from '../../helpers/constants';
+import { sizeConfig } from '../../helpers/constants';
 import Tank from './tank';
 
 const Sprite = PIXI.Sprite;
@@ -27,13 +27,13 @@ export default class GameScene extends AbstractScene {
       2: configImg.WATER,
       3: configImg.LEAVES,
     };
-    const step = type === 0 ? brickSize : wallSize;
-    for (let i = start * wallSize; i < start * wallSize + amount * wallSize; i += step) {
-      const position = { x: i, y: rowIndex * wallSize };
+    const step = type === 0 ? sizeConfig.brickSize : sizeConfig.wallSize;
+    for (let i = start * sizeConfig.wallSize; i < start * sizeConfig.wallSize + amount * sizeConfig.wallSize; i += step) {
+      const position = { x: i, y: rowIndex * sizeConfig.wallSize };
       const cell = new Cell(this.mainScene, textures[type], position);
       cell.init();
       if (type === 0) {
-        const additionalCellPosition = { x: i, y: rowIndex * wallSize + brickSize };
+        const additionalCellPosition = { x: i, y: rowIndex * sizeConfig.wallSize + sizeConfig.brickSize };
         const additionalCell = new Cell(this.mainScene, textures[type], additionalCellPosition);
         additionalCell.init();
       }

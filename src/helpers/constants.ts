@@ -1,4 +1,6 @@
-export const docWidth = 1044;
-export const docHeight = 756;
-export const wallSize = 36;
-export const brickSize = 18;
+export const sizeConfig = {
+  docWidth: 1044,
+  docHeight: 756,
+  wallSize: 36,
+  brickSize: 18,
+};
